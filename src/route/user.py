@@ -1,21 +1,31 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify, make_response
 from ..model.user import User
 
 user = Blueprint('user', __name__)
 
+
 @user.route("/user/")
 def index():
-    return "Hello, this is the main page!"
+    data_dict = {
+        "name": "Bruno",
+        "email": "bruno@gmail.com",
+        "cpf": "123123123",
+        "password": "password123",
+        "phone": "123453467",
+        "birthday": "1990-12-03"
+    }
+
+    return jsonify(data_dict)
+
 
 @user.route("/user/register", methods=['POST'])
 def register():
     data = request.get_json()
-    user = User(name=data["name"], email=data["email"], cpf=data["cpf"], password=data["password"], phone=data["phone"], birthday=data["birthday"])
+    user = User(name=data["name"], email=data["email"], cpf=data["cpf"], password=data["password"], phone=data["phone"],
+                birthday=data["birthday"])
     from src.dao.create_user import create_user
-    create_user(user)
-    # return user.name
-    return
-
-@user.route("/user/about")
-def about():
-    return "This is the about page!"
+    response_function = create_user(user)
+    if response_function:
+        return "OK"
+    else:
+        return "FAILED"
