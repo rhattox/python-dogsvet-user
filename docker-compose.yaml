@@ -5,13 +5,16 @@ services:
     tty: true
     environment:
       # Main file
-      - FLASK_APP=main
+      FLASK_APP: main
       # Develpment mode
-      - FLASK_ENV=development
-      - FLASK_RUN_HOST=0.0.0.0
-      - FLASK_RUN_DEBUG=True
-      - FLASK_RUN_PORT=5000
-    # tty: true
+      FLASK_ENV: development
+      FLASK_RUN_HOST: 0.0.0.0
+      FLASK_RUN_DEBUG: True
+      FLASK_RUN_PORT: 5000
+      POSTGRES_ENDPOINT: "db"
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres_database}
     entrypoint: [ "flask", "run" ]
     ports:
       - 5000:5000
@@ -19,3 +22,28 @@ services:
       context: .
     volumes:
       - ./src:/opt/user/src
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:9-alpine3.13
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres_database}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres_database", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer:4.8.1
+    ports:
+      - 8080:8080
+    depends_on:
+      db:
+        condition: service_healthy
