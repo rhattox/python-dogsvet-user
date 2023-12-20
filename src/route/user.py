@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from ..model.user import User
 
 user = Blueprint('user', __name__)
@@ -10,8 +10,9 @@ def index():
 @user.route("/user/register", methods=['POST'])
 def register():
     data = request.get_json()
-    user = User(data["name"], data["email"], data["cpf"], data["password"], data["phone"], data["birthday"])
-
+    user = User(name=data["name"], email=data["email"], cpf=data["cpf"], password=data["password"], phone=data["phone"], birthday=data["birthday"])
+    from src.dao.create_user import create_user
+    create_user(user)
     # return user.name
     return
 
