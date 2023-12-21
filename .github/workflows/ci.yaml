@@ -35,4 +35,4 @@ jobs:
 
     - name: Run Python Test
       run: |
-        docker-compose run --entrypoint "/usr/local/bin/python" "tests/test_create_user.py" app
+        docker-compose run --entrypoint "/usr/local/bin/python tests/test_create_user.py" app
