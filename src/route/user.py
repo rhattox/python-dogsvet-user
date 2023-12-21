@@ -42,3 +42,18 @@ def list_all_users():
         return "No Users Found!"
 
     return jsonify(response_function)
+
+
+@user.route("/user/search/email", methods=['POST'])
+def search_user_email():
+    from src.dao.search_user_email import search_user_email
+    data = request.get_json()
+    user = User(name=None, email=data["email"], cpf=None, password=None, phone=None,
+                birthday=None)
+
+    response_function = search_user_email(user)
+
+    if response_function is None:
+        return "No user found!"
+
+    return jsonify(response_function.to_dict())
