@@ -1,6 +1,9 @@
 name: python-tests
 
-on: [ push ]
+on:
+  push:
+    branches:
+      - None
 
 jobs:
   test:
