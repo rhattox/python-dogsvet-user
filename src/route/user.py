@@ -1,10 +1,12 @@
+import json
+
 from flask import Blueprint, request, jsonify, make_response
 from ..model.user import User
 
 user = Blueprint('user', __name__)
 
 
-@user.route("/user/")
+@user.route("/user/", methods=['GET'])
 def index():
     data_dict = {
         "name": "Bruno",
@@ -29,3 +31,14 @@ def register():
         return "OK"
     else:
         return "FAILED"
+
+
+@user.route("/user/list/all", methods=['GET'])
+def list_all_users():
+    from src.dao.list_all_users import list_all_users
+    response_function = list_all_users()
+
+    if not response_function or response_function is None:
+        return "No Users Found!"
+
+    return jsonify(response_function)
