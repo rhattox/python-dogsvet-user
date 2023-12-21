@@ -29,9 +29,9 @@ jobs:
       run: |
         docker-compose build
 
-    - name: Start all services
-      run: |
-        docker-compose up -d
+#    - name: Start all services
+#      run: |
+#        docker-compose up -d
 
     - name: Run Python Test
       run: |
