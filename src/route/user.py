@@ -57,3 +57,19 @@ def search_user_email():
         return "No user found!"
 
     return jsonify(response_function.to_dict())
+
+
+@user.route("/user/delete/email", methods=['POST'])
+def delete_user_email():
+    from src.dao.delete_user import delete_user
+    data = request.get_json()
+    user = User(name=None, email=data["email"], cpf=None, password=None, phone=None,
+                birthday=None)
+
+    response_function = delete_user(user)
+
+    print(response_function)
+    if response_function:
+        return "User deleted successfully!"
+    else:
+        return "Not exists"
