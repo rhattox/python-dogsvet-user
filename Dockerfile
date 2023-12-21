@@ -1,6 +1,11 @@
 FROM python:3.10-bullseye
 
-WORKDIR /opt/user/src
+ARG WORKDIR=/opt/user/src
+
+WORKDIR ${WORKDIR}
+
+# fix to execute test within src.x.y module import
+ENV PYTHONPATH=${WORKDIR}/../
 
 COPY ./src ./
 
