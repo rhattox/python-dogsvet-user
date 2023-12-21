@@ -28,3 +28,11 @@ jobs:
     - name: Build docker image
       run: |
         docker-compose build
+
+    - name: Start all services
+      run: |
+        docker-compose up -d
+
+    - name: Run Python Test
+      run: |
+        docker-compose run app python tests/test_create_user.py
