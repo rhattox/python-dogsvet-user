@@ -3,4 +3,4 @@ alembic==1.13.1
 SQLAlchemy==2.0.23
 python-dotenv==1.0.0
 psycopg2==2.9.9
-pylint
+pylint==3.0.3
