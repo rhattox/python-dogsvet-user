@@ -1,0 +1,17 @@
+name: python-tests
+
+on: [ push ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build docker image
+        run: |
+          docker-compose build
+
+      - name: Run Python Test
+        run: |
+          docker-compose run --entrypoint "/usr/local/bin/python tests/test_create_user.py"
